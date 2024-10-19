@@ -17,12 +17,15 @@ class MyWindow(QMainWindow, form_class):
         self.figure, self.ax = plt.subplots()
         self.canvas = FigureCanvas(self.figure)
 
+        self.figure_2, self.ax_2 = plt.subplots()
+        self.canvas_2 = FigureCanvas(self.figure_2)
+
         # UI에서 widgetForChart 위젯을 가져와 layout 설정
         layout = QVBoxLayout(self.widgetForChart)
         layout.addWidget(self.canvas)
 
         layout_2 = QVBoxLayout(self.widgetForChart_2)
-        layout_2.addWidget(self.canvas)
+        layout_2.addWidget(self.canvas_2)
 
         # CSV 파일에서 데이터 읽기
         data = pd.read_csv("data.csv")
@@ -49,20 +52,21 @@ class MyWindow(QMainWindow, form_class):
         self.canvas.draw()
 
     def st_plot(self, data_st):
-        self.ax.clear()  # 기존 그래프 지우기
+        self.ax_2.clear()  # 기존 그래프 지우기
 
         # date 값을 문자열로 변환하여 10/15 형식으로 만들기
-        data['날짜'] = pd.to_datetime(data['날짜'], format='%m%d')  # 월과 일을 인식하도록 변환
-        data['가격'] = data['가격'].dt.strftime('%m/%d')  # 원하는 형식으로 변환
+        data_st['날짜'] = data_st['날짜'].astype(str)
+        # data_st['날짜'] = pd.to_datetime(data_st['날짜'], format='%Y%m%d')  # 월과 일을 인식하도록 변환
+        # data_st['날짜'] = data_st['날짜'].dt.strftime('%Y/%m/%d')  # 원하는 형식으로 변환
 
         # Y축에서 과학적 표기법 비활성화
-        self.ax.get_yaxis().get_major_formatter()
+        self.ax_2.get_yaxis().get_major_formatter()
 
-        self.ax.plot(data['날짜'], data['가격'], marker='x')  # 변환된 date 사용
-        self.ax.set_xlabel('날짜')  # x축 라벨 설정
-        self.ax.set_ylabel('가격')  # y축 라벨 설정
-        self.figure.tight_layout()  # 그래프가 겹치지 않도록 여백 자동 조정
-        self.canvas.draw()
+        self.ax_2.plot(data_st['날짜'], data_st['가격'], marker='x')  # 변환된 date 사용
+        self.ax_2.set_xlabel('날짜')  # x축 라벨 설정
+        self.ax_2.set_ylabel('가격')  # y축 라벨 설정
+        self.figure_2.tight_layout()  # 그래프가 겹치지 않도록 여백 자동 조정
+        self.canvas_2.draw()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
