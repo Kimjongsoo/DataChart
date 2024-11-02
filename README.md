@@ -15,6 +15,12 @@ Python 언어로 PYTQ5 를 이용하여 pandas 라이브러리를 써서 차트 
 mydata.csv : 날짜, 총 금액 
 chartx.csv : 종목명, 날짜, 가격
 
-[개발중..]
+[결과물]
 
-![worign](https://github.com/user-attachments/assets/d0abb1f1-624d-4cb2-a7bd-46cc37a379d9)
+![image](https://github.com/user-attachments/assets/7e635b0b-9b68-4892-a1a8-c7edae6473a1)
+
+
+![image](https://github.com/user-attachments/assets/7774d807-e4ba-4425-8f1e-00d89152d887)
+
+
+
