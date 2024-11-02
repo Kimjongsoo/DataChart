@@ -5,6 +5,7 @@ from PyQt5 import uic
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from refresh_window import RefreshWindow
 
 form_class = uic.loadUiType("test.ui")[0]
 
@@ -35,6 +36,10 @@ class MyWindow(QMainWindow, form_class):
         self.plot(data)
         self.st_plot(data_st)
 
+        #pushbuttn_2에 창 연결
+        self.pushButton_2.clicked.connect(self.handle_pushButton_2)
+
+
     def plot(self, data):
         self.ax.clear()  # 기존 그래프 지우기
 
@@ -44,11 +49,12 @@ class MyWindow(QMainWindow, form_class):
 
         # Y축에서 과학적 표기법 비활성화
         self.ax.get_yaxis().get_major_formatter().set_scientific(False)
-
         self.ax.plot(data['date'], data['allsum'], marker='o')  # 변환된 date 사용
+
         self.ax.set_xlabel('Date')  # x축 라벨 설정
         self.ax.set_ylabel('All Sum')  # y축 라벨 설정
         self.figure.tight_layout()  # 그래프가 겹치지 않도록 여백 자동 조정
+        self.ax.plot(data['date'], data['allsum'])
         self.canvas.draw()
 
     def st_plot(self, data_st):
@@ -60,7 +66,8 @@ class MyWindow(QMainWindow, form_class):
         # data_st['날짜'] = data_st['날짜'].dt.strftime('%Y/%m/%d')  # 원하는 형식으로 변환
 
         # Y축에서 과학적 표기법 비활성화
-        self.ax_2.get_yaxis().get_major_formatter()
+        formatter = self.ax_2.get_yaxis().get_major_formatter()
+        formatter.set_scientific(False)
 
         self.ax_2.plot(data_st['날짜'], data_st['가격'], marker='x')  # 변환된 date 사용
         self.ax_2.set_xlabel('날짜')  # x축 라벨 설정
@@ -68,8 +75,26 @@ class MyWindow(QMainWindow, form_class):
         self.figure_2.tight_layout()  # 그래프가 겹치지 않도록 여백 자동 조정
         self.canvas_2.draw()
 
+
+    def handle_pushButton_2(self):
+        # pushButton_2 클릭 시 수행할 작업
+        print("pushButton_2 클릭됨!")
+        # 예: RefreshWindow 창 열기
+        self.refresh_window = RefreshWindow()
+        self.refresh_window.show()
+
+    def open_refresh_window(self):
+        # 새로고침 창 열기
+        self.refresh_window = RefreshWindow()  # 외부 모듈에서 가져온 클래스 사용
+        self.refresh_window.show()
+
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     myWindow = MyWindow()
     myWindow.show()
     app.exec_()
+
+
+
+
